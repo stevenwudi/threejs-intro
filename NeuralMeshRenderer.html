@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1280, user-scalable=no">
+
+  <title>Neural 3D Mesh Renderer</title>
+
+  <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
+
+  <!-- Required stylesheet -->
+  <link rel="stylesheet" href="deck.js/core/deck.core.css">
+
+  <!-- Extension CSS files go here. Remove or add as needed. -->
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/menu/deck.menu.css">
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/goto/deck.goto.css">
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/status/deck.status.css">
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/navigation/deck.navigation.css">
+
+  <!-- Style theme. More available in /themes/style/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="resources/theme.css">
+
+  <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+  <!-- <link rel="stylesheet" media="screen" href="deck.js/themes/transition/fade.css"> -->
+
+  <!-- Basic black and white print styles -->
+  <!-- <link rel="stylesheet" media="print" href="deck.js/core/print.css"> -->
+
+  <!-- Required Modernizr file -->
+  <script src="deck.js/modernizr.custom.js"></script>
+
+</head>
+<body class="language-javascript">
+    <div class="deck-container">
+
+    <!-- Begin slides. Just make elements with a class of slide. -->
+    <section class="slide">
+      <iframe src="iframes/cube-title.html" frameborder="0"></iframe>
+      <div class="page-cover">
+        <h1 class="cover-title">Neural 3D Mesh Renderer
+            <small>Hiroharu Kato, Yoshitaka Ushiku, and Tatsuya Harada
+            The University of Tokyo, RIKEN</small></h1>
+      </div>
+    </section>
+
+    <section class="slide">
+        <h2>3D Mesh Reconstruction</h2>
+        <img src="images/chair.png" alt="" width=256 height=256>
+        <svg width=16 height=256  style="margin: 0.5em;"><polygon points="0,80 16,128 0,176" style="fill: lightgray;"></polygon></svg>
+        <img src="images/nr_chair.gif" alt="" width=256 height=256>
+    </section>
+
+    <section class="slide">
+        <h2>2D-to-3D Style Transfer</h2>
+        <img src="images/bunny.gif" alt="" width=256 height=256>
+        <img src="images/munch.jpg" alt="" width=256 height=256>
+        <svg width=16 height=256  style="margin: 0.5em;"><polygon points="0,80 16,128 0,176" style="fill: lightgray;"></polygon></svg>
+        <img src="images/style_transfer_bunny_munch.gif" alt="" width=256 height=256>
+    </section>
+
+    <section class="slide">
+        <h2>3D DeepDream</h2>
+        <img src="images/teapot.gif" alt="" width=256 height=256>
+        <svg width=16 height=256  style="margin: 0.5em;"><polygon points="0,80 16,128 0,176" style="fill: lightgray;"></polygon></svg>
+        <img src="images/deep_dream_teapot.gif" alt="" width=256 height=256>
+    </section>
+
+    <section class="slide">
+      <!-- <img class="spotlight" src="images/threejs.png" alt=""> -->
+      <iframe src="http://hiroharu-kato.com/projects_en/neural_renderer.html" frameborder="0"></iframe>
+      <!-- <div class="abs-bc bc-text outline"><a href="https://threejs.org/" style="font-weight: bold; text-decoration: none;" target="_blank">threejs.org</a></div> -->
+    </section>
+
+    <section class="slide">
+      <h2>Abstract</h2>
+        <section class="slide-text">
+          <ol>
+              <li>
+                  <p>An approximate gradient for rasterization that enables
+                      the integration of rendering into neural networks.</p>
+              </li>
+              <li>
+                  <p>Single-image 3D mesh reconstruction with silhouette image supervision.</p>
+              </li>
+              <li>
+                  <p>Gradient-based 3D mesh editing operations,
+                      such as 2D-to-3D style transfer and 3D DeepDream, with 2D supervision.</p>
+              </li>
+          </ol>
+        </section>
+    </section>
+
+    <section class="slide">
+        <iframe src="iframes/loader_obj.html" frameborder="0"></iframe>
+    <h2>Model Loader</h2>
+        <div class="slide temp abs-bc"><pre><code>
+        &lt;script src="three/examples/js/loaders/GLTFLoader.js"&gt;&lt;/script&gt;
+
+        var objloader = new THREE.GLTFLoader();
+        objloader.load( "3Dmodel.glb", function( gltf ) {
+        mesh = gltf.scene;
+        mesh.scale.set(10000, 10000, 10000);
+        scene.add( mesh );
+        })
+        </code></pre></div>
+    </section>
+
+    <section class="slide">
+      <iframe src="iframes/apolloscape/plot_all_cars.html" frameborder="0"></iframe>
+      <h2>ApolloScape 79 Car 3D Mesh</h2>
+    </section>
+
+    <section class="slide">
+        <iframe src="iframes/apolloscape/Apollo_car_3d.html" frameborder="0"></iframe>
+        <h2>ApolloScape 3D Car Understanding</h2>
+    </section>
+
+    <section class="slide">
+      <!-- <iframe src="http://threejs.org/examples/webgl_materials_cubemap" frameborder="0"></iframe> -->
+      <iframe src="iframes/cubemap.html" frameborder="0"></iframe>
+    </section>
+
+    <section class="slide">
+      <!-- http://stemkoski.github.io/Three.js/Mouse-Over.html -->
+      <!-- http://threejs.org/examples/webgl_interactive_cubes -->
+      <!-- http://soledadpenades.com/articles/three-js-tutorials/object-picking/ -->
+      <iframe src="http://threejs.org/examples/webgl_interactive_cubes" frameborder="0"></iframe>
+    </section>
+
+    <section class="slide instant">
+      <iframe src="iframes/interactive-cubes-helpers.html" frameborder="0"></iframe>
+      <div class="slide"></div>
+      <div class="slide"></div>
+    </section>
+
+    <section class="slide">
+      <div class="page-cover">
+        <h1 class="cover-title">
+          Thanks, Di Wu
+        </h1>
+      </div>
+    </section>
+
+    <!-- End slides. -->
+
+    <!-- Begin extension snippets. Add or remove as needed. -->
+
+    <!-- deck.status snippet -->
+    <p class="deck-status" aria-role="status">
+      <span class="deck-status-current"></span>
+      /
+      <span class="deck-status-total"></span>
+    </p>
+
+    <!-- deck.goto snippet -->
+    <form action="." method="get" class="goto-form">
+      <label for="goto-slide">Go to slide:</label>
+      <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+      <datalist id="goto-datalist"></datalist>
+      <input type="submit" value="Go">
+    </form>
+
+    <!-- End extension snippets. -->
+  </div>
+
+<div id="info-left">
+  <a href="https://stevenwudi.github.io/">https://stevenwudi.github.io/</a>
+</div>
+
+<!-- deck.navigation snippet -->
+<div class="deck-nav" aria-role="navigation">
+  <a href="#" class="deck-prev-link" title="Previous">&lsaquo;</a>
+  <a href="#" class="deck-next-link" title="Next">&rsaquo;</a>
+</div>
+
+<div id="info-right">
+  <a href="https://www.youtube.com/watch?v=vziVsrCaMHY" target="_blank">Spot Light Video</a><br>
+  <a href="http://hiroharu-kato.com/projects_en/neural_renderer.html" target="_blank">Project Page</a><br>
+</div>
+
+<!-- Required JS files. -->
+<script src="resources/jquery-2.1.1.min.js"></script>
+<script src="deck.js/core/deck.core.js"></script>
+
+<!-- Extension JS files. Add or remove as needed. -->
+<script src="deck.js/extensions/menu/deck.menu.js"></script>
+<script src="deck.js/extensions/goto/deck.goto.js"></script>
+<script src="deck.js/extensions/status/deck.status.js"></script>
+<script src="deck.js/extensions/navigation/deck.navigation.js"></script>
+
+<script src="iframes/three/three.min.js"></script>
+<script src="resources/VRController.js"></script>
+
+<!-- Initialize the deck -->
+<script src="resources/slides.js"></script>
+<script src="resources/prism.js"></script>
+
+</body>
+</html>

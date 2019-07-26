@@ -1,0 +1,7 @@
+/dev
+.DS_Store
+*.codekit
+.idea/
+
+*.jpg
+*.json

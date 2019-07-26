@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../resources/lib/three.min.js"></script>
+    <script src="../../resources/jquery-2.1.1.min.js"></script>
+    <script src="../three/libs/tween.min.js"></script>
+    <script src="../three/libs/dat.gui.min.js"></script>
+
+    <script src="../../resources/lib/Detector.js"></script>
+    <script src="../../resources/lib/Coordinates.js"></script>
+    <script src="../../resources/lib/OrbitAndPanControls.js"></script>
+    <script src="../../resources/lib/TrackballControls.js"></script>
+    <script src="../../resources/lib/stats.min.js"></script>
+    <script src="../../resources/lib/sprintf.js"></script>
+
+    <style type="text/css">
+        html { overflow: hidden; }
+        body { margin: 0; padding: 0; overflow: hidden; font-family: Monospace; font-size: 13px; line-height: 20px; color: #333; }
+
+        a { color: #0088cc; text-decoration: none; }
+        a:hover, a:focus { color: #005580; text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    if ( ! Detector.webgl ) {
+        Detector.addGetWebGLMessage();
+    }
+
+    var container;
+    var camera, scene, renderer;
+    var cameraControls, effectController;
+    var clock = new THREE.Clock();
+    var ambientLight, light;
+    var meter_in_pixel = 500.;
+
+    var info = document.getElementById( 'info' );
+    var windowHalfX = window.innerWidth / 2;
+    var windowHalfY = window.innerHeight / 2;
+    // How to position meshes while loading? (async problem) #1280
+    // https://github.com/mrdoob/three.js/issues/1280
+    function generateCallback( r1, r2, r3, t1, t2, t3) {
+
+        return function( geometry ) {
+
+            var car_instance = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial());
+            // THREE js coordinate system, x and y axis are opposite from that of OpenCV
+
+            car_instance.rotation.x = r1;
+            car_instance.rotation.y = r2;
+            car_instance.rotation.z = r3;
+
+            car_instance.position.x = meter_in_pixel * t1;
+            car_instance.position.y = meter_in_pixel * t2;
+            car_instance.position.z = meter_in_pixel * t3;
+
+            scene.add(car_instance);
+
+        };
+
+    }
+
+    // Your FOV slider should go in this function
+    // the value of the slider should be accessible globally via: effectController.fov
+    function setupGui() {
+        effectController = {
+            fov: 60,
+            near: 20,
+            far: 50000,
+        };
+        //gui.removeFolder('Camera manipulation')
+        var f;
+
+        var gui = new dat.GUI();
+
+        f = gui.addFolder('Camera manipulation');
+
+        f.add( effectController, "fov", 1.0, 179.0 ).name("Field of view");
+        f.add( effectController, "near", 1.0, 50000).name("Near plane");
+        f.add( effectController, "far", 100.0, 50000.0 ).name("Far plane");
+    }
+
+    function init() {
+        // CAMERA
+        // OrthographicCamera(left, right, top, bottom ,near far)
+        //camera = new THREE.OrthographicCamera(-2000, 2000, -1000, 1000, 0, 10000);
+        camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 80000 );
+        camera.position.set( 0, 200, -500);
+        camera.lookAt(0, 0, 0);
+        // LIGHTS
+
+        ambientLight = new THREE.AmbientLight( 0xFFFFFF );
+        light = new THREE.DirectionalLight( 0xFFFFFF, 0.7 );
+        light.position.set( -800, 900, 300 );
+
+        // RENDERER
+        renderer = new THREE.WebGLRenderer( {antialias: true } );
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        var container = document.getElementById('container');
+        container.appendChild( renderer.domElement );
+
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+
+        // CONTROLS
+        cameraControls = new THREE.OrbitAndPanControls( camera, renderer.domElement );
+        // Scene
+        scene = new THREE.Scene();
+        setupGui();
+    }
+
+    function fillScene() {
+
+        // Read from a Json file with all the car poses:
+        scene.add( ambientLight );
+        scene.add( light );
+
+        // Main loop here, we have 79 different type of cars
+        var tot_num = 79;
+
+        var num_row = 8;
+
+        for (var i = 0; i < tot_num; i++){
+            var car_file = '../models/car_model_threejs/' + i.toString() + '.js';
+            console.log(car_file);
+
+            var loader = new THREE.JSONLoader();
+            var x_t = i % num_row;
+            var y_t = Math.floor(i/num_row);
+            console.log(x_t, y_t);
+            loader.load(car_file, generateCallback(0, -Math.PI/4, 0, x_t, y_t, 0));
+        }
+
+        // thicker axes
+        //Coordinates.drawAllAxes({axisLength:500,axisRadius:22,axisTess:200});
+        // The X axis is red. The Y axis is green. The Z axis is blue.
+        var worldAxis = new THREE.AxisHelper( 400 );
+        scene.add( worldAxis );
+    }
+
+    function addToDOM() {
+        var container = document.getElementById('container');
+        var canvas = container.getElementsByTagName('canvas');
+        if (canvas.length>0) {
+            container.removeChild(canvas[0]);
+        }
+        container.appendChild( renderer.domElement );
+    }
+
+    function animate() {
+        window.requestAnimationFrame( animate );
+        render();
+    }
+
+    function render() {
+        var delta = clock.getDelta();
+        cameraControls.update(delta);
+
+        // gui control update
+        camera.fov = effectController.fov;
+        camera.near = effectController.near;
+        camera.far = effectController.far;
+        camera.updateProjectionMatrix();
+
+        renderer.render( scene, camera );
+    }
+
+    init();
+    fillScene();
+    addToDOM();
+    animate();
+
+</script>
+</body>
+</html>
