@@ -1,9 +1,6 @@
-Intro to WebGL with Three.js
+Slides using with decker.js
 ----------------------------
 
-* `index.html` – Front Porch Conference 2014, Dallas, Texas ([Slides](http://davidscottlyons.com/threejs-intro) | [Video](https://youtu.be/6eLl8yQnxHQ))
-* `offline-extended.html` – Dallas HTML5 User Group Meetup, November 2014 ([Slides](http://davidscottlyons.com/threejs-intro/offline-extended.html) | [Video](https://youtu.be/-L6WWbKthvw))
+* `NeuralMeshRenderer.html` – This is the main slides 
 
-WebGL presentation slides.
-Runs on [deck.js](https://github.com/imakewebthings/deck.js)
 Use the "m" key to open the menu for quick navigation between slides.
